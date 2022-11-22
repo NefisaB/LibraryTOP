@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    background-color: rgb(199, 249, 204);
+    color: rgb(13, 58, 88);
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 4rem;
+    text-align: center;
+}
+
+.books-container {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 18%));
+    gap: 10px;
+    justify-content: center;
+}
+
+.book-container,
+.add-btn-div {
+    position: relative;
+    padding: 20px;
+    background-color: rgb(128, 237, 153);
+    height: 200px;
+    border-radius: 20px;
+}
+
+.book-container h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.book-container h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.book-container .read-button,
+.add-book {
+    padding: 5px 10px;
+    width: 100px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: rgb(56, 163, 165);
+    color: rgb(199, 249, 204);
+    text-transform: uppercase;
+
+}
+
+.book-container .read-button {
+    position: absolute;
+    bottom: 20px;
+}
+
+.add-btn-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-div.hidden {
+    display: none;
+}
+
+.form-div.show {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-div form {
+    width: 30%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgb(87, 204, 153);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+legend {
+    font-size: 2rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+input {
+    line-height: 1.75rem;
+    border-radius: 5px;
+    outline: none;
+    padding-left: 5px;
+    font-size: 1.25rem;
+    border: none;
+}
+
+fieldset {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+fieldset:last-of-type {
+    flex-direction: row;
+}
+
+form button {
+    width: 40%;
+    height: 40px;
+    align-self: center;
+    line-height: 1.75rem;
+    font-size: 1.5rem;
+    background-color: rgb(13, 58, 88);
+    color: rgb(56, 163, 165);
+    padding: 5px auto;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 4px 4px 4px 4px rgb(56, 163, 165);
+}
+
+form button:active {
+    border: none;
+    transform: translateY(2px);
+    box-shadow: 4px 0px 4px 4px rgb(56, 163, 165);
+
+}

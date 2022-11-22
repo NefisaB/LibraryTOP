@@ -12,11 +12,47 @@
 
 <body>
 
-    <h1>Library</h1>
+    <div class="main">
 
-    <div class="books-container"></div>
+        <h1>Library</h1>
 
+        <div class="books-container">
 
+            <div class="add-btn-div">
+                <button class="add-book">
+                    Add Book
+                </button>
+            </div>
+        </div>
+
+        <div class="form-div hidden">
+
+            <form action="#">
+                <legend>Add New Book To The Library</legend>
+                <fieldset>
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required>
+                </fieldset>
+                <fieldset>
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" name="author" required>
+                </fieldset>
+                <fieldset>
+                    <label for="pages">Pages:</label>
+                    <input type="number" id="pages" name="pages" min="0">
+                </fieldset>
+                <fieldset>
+                    <input type="radio" id="read" class="isRead" name="isRead" value="true">
+                    <label for="read">READ</label>
+                    <input type="radio" id="unread" class="isRead" name="isRead" value="false">
+                    <label for="unread">UNREAD</label>
+                </fieldset>
+                <button type="submit" id="submit-book">ADD</button>
+
+            </form>
+        </div>
+
+    </div>
 
     <script src="app.js"></script>
 
