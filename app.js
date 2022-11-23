@@ -7,14 +7,40 @@ const titleEl = document.getElementById("title");
 const authorEl = document.getElementById("author");
 const pagesEl = document.getElementById("pages");
 
+let id = 1;
+
 function Book(title, author, pages, isRead) {
+    this.id = id++;
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.isRead = isRead;
+
 }
 
-let myLibrary = [new Book("Helo", "Hi", 3, false)];
+let myLibrary = [];
+
+function updateBookStatus(title) {
+    let foundIndex = myLibrary.findIndex(x => x.title === title);
+    let book = myLibrary[foundIndex];
+    book.isRead = !book.isRead;
+    myLibrary[foundIndex] = book;
+    console.log(myLibrary);
+
+}
+
+function toggleRead(title) {
+    const items = document.querySelectorAll(".book-container");
+    for (let item of items) {
+        console.log(item.firstChild.textContent);
+        console.log(title);
+        if (item.firstChild.textContent === title) {
+            item.lastChild.firstChild.textContent = item.lastChild.firstChild.textContent === "read" ? "unread" : "read";
+            updateBookStatus(title);
+        }
+    }
+}
+
 
 function addBookToList(book) {
     const h3 = document.createElement("h3");
@@ -23,8 +49,8 @@ function addBookToList(book) {
     h4.textContent = book.author;
     const readButton = document.createElement("button");
     readButton.classList.add("read-button");
-    console.log(book.isRead);
     readButton.innerText = book.isRead ? "read" : "unread";
+    readButton.setAttribute("onclick", `toggleRead("${book.title}")`);
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "delete";
     deleteBtn.classList.add("delete-button");
@@ -68,8 +94,10 @@ form.addEventListener("submit", function (e) {
     const isReadString = document.querySelector('input[name="isRead"]:checked').value;
     const isRead = (isReadString === "true");
     const newBook = new Book(titleEl.value, authorEl.value, pagesEl.value, isRead);
+
     myLibrary.push(newBook);
-    addBookToList(newBook);
+    booksContainer.replaceChildren(newBtnDiv);
+    loadLibrary();
     hideForm();
     form.reset();
 });
