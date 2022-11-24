@@ -1,105 +1,97 @@
 const booksContainer = document.querySelector(".books-container");
-const newBtnDiv = document.querySelector(".add-btn-div");
+const addBookDiv = document.querySelector(".add-btn-div");
 const addBookBtn = document.querySelector(".add-book");
 const formDiv = document.querySelector(".form-div");
 const form = document.querySelector("form");
 const titleEl = document.getElementById("title");
 const authorEl = document.getElementById("author");
 const pagesEl = document.getElementById("pages");
+const readEl = document.querySelector(".read");
 
 let id = 1;
 
 function Book(title, author, pages, isRead) {
     this.id = id++;
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.isRead = isRead;
-
+    this.title = title || "Unknown";
+    this.author = author || "Unknown";
+    this.pages = pages || 0;
+    this.isRead = isRead || false;
 }
 
-let myLibrary = [];
-
-function updateBookStatus(title) {
-    let foundIndex = myLibrary.findIndex(x => x.title === title);
-    let book = myLibrary[foundIndex];
-    book.isRead = !book.isRead;
-    myLibrary[foundIndex] = book;
-    console.log(myLibrary);
-
+Book.prototype.toggleRead = function () {
+    this.isRead = !this.isRead;
 }
 
-function toggleRead(title) {
-    const items = document.querySelectorAll(".book-container");
-    for (let item of items) {
-        console.log(item.firstChild.textContent);
-        console.log(title);
-        if (item.firstChild.textContent === title) {
-            item.lastChild.firstChild.textContent = item.lastChild.firstChild.textContent === "read" ? "unread" : "read";
-            updateBookStatus(title);
-        }
-    }
+const myLibrary = [];
+
+function deleteBook(itemId) {
+    const foundIndex = myLibrary.findIndex(el => {
+        return el.id === parseInt(itemId);
+    });
+    myLibrary.splice(foundIndex, 1);
+    document.querySelector(`[data-id="${itemId}"]`).remove();
 }
 
+function updateReadStatus(itemId) {
+    const foundIndex = myLibrary.findIndex(el => {
+        return el.id === parseInt(itemId);
+    });
+    const modifiedItem = myLibrary[foundIndex];
+    modifiedItem.toggleRead();
+    myLibrary[foundIndex] = modifiedItem;
+    document.querySelector(`[data-id="${itemId}"]`).lastChild.firstChild.textContent = modifiedItem.isRead ? "read" : "unread";
+}
 
-function addBookToList(book) {
+function createBookDiv(item) {
+    console.log(item);
     const h3 = document.createElement("h3");
-    h3.textContent = book.title;
+    h3.textContent = item.title;
     const h4 = document.createElement("h4");
-    h4.textContent = book.author;
+    h4.textContent = item.author;
     const readButton = document.createElement("button");
     readButton.classList.add("read-button");
-    readButton.innerText = book.isRead ? "read" : "unread";
-    readButton.setAttribute("onclick", `toggleRead("${book.title}")`);
+    readButton.innerText = item.isRead ? "read" : "unread";
+    readButton.setAttribute("onclick", `updateReadStatus("${item.id}")`);
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "delete";
     deleteBtn.classList.add("delete-button");
-    deleteBtn.setAttribute("onclick", `deleteBook("${book.title}")`);
+    deleteBtn.setAttribute("onclick", `deleteBook("${item.id}")`);
     const buttonsDiv = document.createElement("div");
     buttonsDiv.classList.add("buttons-div");
     buttonsDiv.appendChild(readButton);
     buttonsDiv.appendChild(deleteBtn);
     const bookDiv = document.createElement("div");
     bookDiv.classList.add("book-container");
+    bookDiv.setAttribute("data-id", item.id);
     bookDiv.appendChild(h3);
     bookDiv.appendChild(h4);
     bookDiv.appendChild(buttonsDiv);
-    booksContainer.insertBefore(bookDiv, newBtnDiv);
+    booksContainer.insertBefore(bookDiv, addBookDiv);
 }
 
 function loadLibrary() {
-    for (let book of myLibrary) {
-        addBookToList(book);
+    for (let item of myLibrary) {
+        createBookDiv(item);
     }
 }
 
-function deleteBook(title) {
-    myLibrary = myLibrary.filter((book) => book.title !== title);
-    booksContainer.replaceChildren(newBtnDiv);
-    loadLibrary();
+function toggleForm() {
+    formDiv.classList.toggle("hidden");
+    formDiv.classList.toggle("show");
 }
 
-function hideForm() {
-    formDiv.classList.remove("show");
-    formDiv.classList.add("hidden");
-}
 
-addBookBtn.addEventListener("click", function () {
-    formDiv.classList.remove("hidden");
-    formDiv.classList.add("show");
-});
-
-form.addEventListener("submit", function (e) {
+function addBookToLibrary(e) {
     e.preventDefault();
-    const isReadString = document.querySelector('input[name="isRead"]:checked').value;
-    const isRead = (isReadString === "true");
-    const newBook = new Book(titleEl.value, authorEl.value, pagesEl.value, isRead);
-
+    const newBook = new Book(titleEl.value, authorEl.value, pagesEl.value, readEl.checked);
     myLibrary.push(newBook);
-    booksContainer.replaceChildren(newBtnDiv);
-    loadLibrary();
-    hideForm();
+    createBookDiv(newBook);
     form.reset();
-});
+    toggleForm();
+}
+
+addBookBtn.addEventListener("click", toggleForm);
+
+form.addEventListener("submit", addBookToLibrary);
 
 loadLibrary();
