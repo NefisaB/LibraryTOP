@@ -10,16 +10,18 @@ const readEl = document.querySelector(".read");
 
 let id = 1;
 
-function Book(title, author, pages, isRead) {
-    this.id = id++;
-    this.title = title || "Unknown";
-    this.author = author || "Unknown";
-    this.pages = pages || 0;
-    this.isRead = isRead || false;
-}
+class Book {
+    constructor(title, author, pages, isRead) {
+        this.id = id++;
+        this.title = title || "Unknown";
+        this.author = author || "Unknown";
+        this.pages = pages || 0;
+        this.isRead = isRead || false;
+    }
 
-Book.prototype.toggleRead = function () {
-    this.isRead = !this.isRead;
+    toggleRead = () => {
+        this.isRead = !this.isRead;
+    }
 }
 
 const myLibrary = [];
